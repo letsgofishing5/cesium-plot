@@ -1,0 +1,29 @@
+@charset "UTF-8";
+/* 提示词 */
+.__lsgfish_prompt {
+  position: absolute;
+  max-width: 150px;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 2px 5px;
+  border-radius: 3px;
+  color: white;
+  font-size: 12px;
+  padding: 3px 5px;
+}
+
+.__lsgfish_menu {
+  position: absolute;
+  top: 100px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 3px;
+  color: white;
+}
+.__lsgfish_menu .delete {
+  cursor: pointer;
+}
+.__lsgfish_menu .delete svg {
+  padding: 3px 2px 2px 2px;
+}
+.__lsgfish_menu .delete svg path {
+  fill: white;
+} /*# sourceMappingURL=index.css.map */

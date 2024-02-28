@@ -1,0 +1,32 @@
+{
+  "name": "cesium-plot",
+  "private": false,
+  "description": "cesium cesium-plot plot",
+  "version": "1.0.13",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/types",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "cesium-plot": "link:",
+    "vue": "^3.4.15"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.21",
+    "@vitejs/plugin-vue": "^5.0.3",
+    "terser": "^5.28.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0",
+    "vite-plugin-dts": "^3.7.3",
+    "vite-plugin-style-inject": "^0.0.1",
+    "vue-tsc": "^1.8.27"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/letsgofishing5/cesium-plot.git"
+  }
+}
