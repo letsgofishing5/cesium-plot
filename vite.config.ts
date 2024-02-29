@@ -16,7 +16,10 @@ export default defineConfig({
   build: {
     minify: "terser",
     terserOptions: {
-      keep_classnames: true
+      keep_classnames: true,
+      mangle: {
+        properties: false, // 关闭混淆对象属性名
+      },
     },
     lib: {
       entry: 'src/build.ts',

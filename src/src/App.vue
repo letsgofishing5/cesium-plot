@@ -67,7 +67,7 @@ onMounted(async () => {
     console.log("params:", params);
   });
 });
-let exportData: GeoJson[] = [];
+let exportData: GeoJson = { type: "FeatureCollection", features: [] };
 function drawPoint() {
   plot.changeMode("Point", false);
 }
@@ -97,7 +97,8 @@ function selectMode() {
   plot.changeMode();
 }
 function loadGeoJson() {
-  if (!exportData.length) {
+  console.log("导入：", exportData);
+  if (!exportData?.features?.length) {
     return alert("请先导出数据");
   }
   plot.load(exportData);

@@ -1,11 +1,20 @@
 {
   "name": "cesium-plot",
   "private": false,
-  "description": "cesium cesium-plot plot",
-  "version": "1.0.13",
+  "author": {
+    "name": "走我们钓鱼去",
+    "email": "1113237401@qq.com"
+  },
+  "description": "cesium基础标绘功能库，包含点线面、文字、贴地文字、箭头、画笔、导入导出geojson格式数据、修改样式、选中模式等功能",
+  "keywords": [
+    "cesium",
+    "cesium-plot",
+    "cesium plot"
+  ],
+  "version": "1.0.14",
   "type": "module",
   "main": "dist/index.js",
-  "types": "dist/types",
+  "types": "dist/types.d.ts",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
