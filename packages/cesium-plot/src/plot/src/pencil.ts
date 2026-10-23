@@ -1,5 +1,5 @@
 
-import { getMousePosition } from '@/lib/utils'
+import { getMousePosition } from '../../utils'
 import PolylineBase from '../base/polyline'
 import type { MouseEvent } from '../types'
 export default class Pencil extends PolylineBase {

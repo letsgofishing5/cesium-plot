@@ -1,6 +1,6 @@
 import PolygonBase from '../base/polygon'
 
-import { getMousePosition } from '@/lib/utils'
+import { getMousePosition } from '../../utils'
 import type { MouseEvent } from '../types'
 export default class PolygonArrow extends PolygonBase {
   clickTimes: number

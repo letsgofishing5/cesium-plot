@@ -1,0 +1,43 @@
+{
+  "name": "cesium-plot",
+  "version": "2.0.0",
+  "private": false,
+  "type": "module",
+  "description": "cesium基础标绘功能库，包含点线面、文字、贴地文字、箭头、画笔、导入导出geojson格式数据、修改样式、选中模式等功能",
+  "keywords": [
+    "cesium",
+    "cesium-plot",
+    "cesium plot",
+    "cesium-draw",
+    "geojson"
+  ],
+  "author": {
+    "name": "走我们钓鱼去",
+    "email": "1113237401@qq.com"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/letsgofishing5/cesium-plot.git",
+    "directory": "packages/cesium-plot"
+  },
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.21",
+    "terser": "^5.28.1",
+    "typescript": "^5.2.2",
+    "vite": "^5.1.0",
+    "vite-plugin-dts": "^3.7.3",
+    "vite-plugin-style-inject": "^0.0.1"
+  }
+}

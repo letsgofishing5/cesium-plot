@@ -16,8 +16,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { GeoJson } from "@/lib/plot/types";
-import { Plot } from "cesium-plot";
+import { Plot, type GeoJson } from "cesium-plot";
 import { onMounted } from "vue";
 let plot: any;
 onMounted(async () => {

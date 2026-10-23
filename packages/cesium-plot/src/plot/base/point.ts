@@ -1,6 +1,6 @@
-import { getPosition } from '@/lib/utils'
+import { getPosition } from '../../utils'
 import { FeatureBase } from '../base'
-import { DrawEvents } from '@/lib/plot/config'
+import { DrawEvents } from '../config'
 export default class PointBase extends FeatureBase {
   constructor(config: any) {
     super(config)

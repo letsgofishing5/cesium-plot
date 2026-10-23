@@ -1,7 +1,0 @@
-node_modules/
-public/
-src/
-*.json
-vite.config.ts
-cesium/
-*.svg

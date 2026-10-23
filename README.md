@@ -1,68 +1,41 @@
-## 安装
+# cesium-plot
+
+基于 Cesium 的基础标绘库，支持点、线、面、文字、贴地文字、箭头、画笔，以及 GeoJSON 导入导出、样式修改、选中/拖拽编辑等能力。
+
+仓库采用 pnpm monorepo 结构：
+
+```
+cesium-plot/
+├─ packages/cesium-plot/    # 标绘库本体（发布到 npm 的包）
+├─ apps/playground/         # 演示项目（Vue 3 + Vite）
+└─ types/                   # 临时共享的 Cesium 全局声明（迁移中）
+```
+
+## 本地开发
+
+环境要求：Node >= 20.19、pnpm 11。
 
 ```bash
-pnpm i cesium-plot@latest
+pnpm install
+pnpm dev          # 启动演示项目，默认 http://localhost:5173
 ```
 
+演示项目通过 vite alias 直接引用 `packages/cesium-plot/src`，改动库源码会热更新，无需先构建。
 
+## 常用命令
 
-## 静态资源
+| 命令 | 说明 |
+| --- | --- |
+| `pnpm dev` | 启动演示项目 |
+| `pnpm build:lib` | 构建标绘库（ESM + CJS + 类型声明） |
+| `pnpm build:demo` | 构建演示项目静态站点 |
+| `pnpm preview` | 预览演示项目构建产物 |
+| `pnpm typecheck` | 对各子包执行类型检查 |
 
-在index.html中全局引入Cesium
+## 库文档
 
-```html
-<link rel="stylesheet" href="./cesium/Widgets/widgets.css">
-<script src="./cesium/Cesium.js"></script>
-```
+见 [packages/cesium-plot/README.md](./packages/cesium-plot/README.md)。
 
-## 创建标绘对象
+## License
 
-```ts
-import {Plot} from "cesium-plot"
-const viewer = new Cesium.Viewer("cesiumContainer")
-const plot = new Plot({viewer})
-```
-
-
-
-## 常用API
-
-| 方法名称          | 参数                   | 说明                                                         |
-| ----------------- | ---------------------- | ------------------------------------------------------------ |
-| changeMode        | (String,Boolean)=>void | 第一个参数是模式，不填写默认Select，第二个参数用来控制是否连续绘制，默认为true，连续绘制模式 |
-| export            | ()=>GeoJson[]          | 导出标绘的数据，符合Geojson格式的数据                        |
-| load              | (geojson)=>void        | 导入一组符合Geojson格式的数据，回显图元                      |
-| removeAll         | ()=>void               | 清除所有图元                                                 |
-| updateEntityStyle | （style）=>void        | 更新选中的图元样式                                           |
-
-
-
-## 模式
-
-| 模式         | 说明                                                         |
-| ------------ | ------------------------------------------------------------ |
-| Point        | 点                                                           |
-| Polyline     | 线                                                           |
-| Polygon      | 面                                                           |
-| Label        | 文字                                                         |
-| LabelClamp   | 贴地文字                                                     |
-| PolygonArrow | 箭头                                                         |
-| Pencil       | 画笔                                                         |
-| Select       | 选中模式，即普通模式，可以选中绘制的图元，对选中的图元进行拖拽等操作 |
-
-## 回调监听
-
-```ts
-const plot = new Plot({viewer})
-//创建结束 监听
-plot.on('created', (plotObj: { geojson: { [key: string]: any } }) => {
-  isEdit.value = true
-  const { geojson } = plotObj
-  const { properties, featureConstructorName, id } = geojson
-  const { style } = properties
-  currentPlot.value = id
-  propsType.value.type = featureConstructorName
-  propsType.value.propsConfig = style
-})
-```
-
+MIT

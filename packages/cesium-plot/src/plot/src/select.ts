@@ -1,5 +1,5 @@
 import { FeatureBase } from '../base'
-import { getPosition, pickEntity } from '@/lib/utils'
+import { getPosition, pickEntity } from '../../utils'
 
 import type { MouseEvent } from '../types'
 export default class Select extends FeatureBase {

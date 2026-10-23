@@ -1,8 +1,8 @@
 import { FeatureBase } from '../base'
 
-import { getMousePosition } from '@/lib/utils'
+import { getMousePosition } from '../../utils'
 import { Point } from '../src'
-import { DrawEvents } from '@/lib/plot/config'
+import { DrawEvents } from '../config'
 import type { GeoJsonFeaturesExtend, MouseEvent } from '../types'
 export default class PolygonBase extends FeatureBase {
   /**
