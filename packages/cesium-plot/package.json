@@ -55,6 +55,7 @@
     "dev": "tsdown --watch",
     "build": "tsdown",
     "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm build",
     "test": "vitest run",
     "test:types": "tsc -p test-d/tsconfig.json"
   },

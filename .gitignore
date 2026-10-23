@@ -28,3 +28,6 @@ apps/playground/public/cesium/
 
 # 构建临时目录
 .tmp
+
+# 打包产物
+*.tgz
