@@ -10,6 +10,7 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "cesium": "^1.146.0",
     "cesium-plot": "workspace:*",
     "vue": "^3.4.15"
   },

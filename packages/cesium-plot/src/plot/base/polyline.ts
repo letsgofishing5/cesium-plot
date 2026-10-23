@@ -1,9 +1,10 @@
+import * as Cesium from 'cesium'
 import { FeatureBase } from '../base'
 
-import { getMousePosition } from '../../utils'
+import { colorToCss, getMousePosition } from '../../utils'
 import { Point } from '../src'
 import { DrawEvents } from '../config'
-import type { GeoJsonFeaturesExtend, MouseEvent } from '../types'
+import type { GeoJsonFeaturesExtend, MouseEvent, PolylineStyle } from '../types'
 
 export default class PolylineBase extends FeatureBase {
   /**
@@ -15,19 +16,19 @@ export default class PolylineBase extends FeatureBase {
     this.geometryType = 'LineString'
     this.prompt.setText('单击确定线段起点位置')
   }
-  getStyle(): { [key: string]: any } {
-    const style: { [key: string]: any } = {}
-    style.material = this.entity?.polyline?.material?.getValue(new Cesium.JulianDate())
-    style.color = style.material?.color
-    style.width = this.entity?.polyline?.width?.getValue(new Cesium.JulianDate())
-    style.clampToGround = this.entity?.polyline?.clampToGround?.getValue(new Cesium.JulianDate())
-    return style
+  getStyle(): PolylineStyle {
+    const now = new Cesium.JulianDate()
+    return {
+      color: colorToCss(this.entity?.polyline?.material?.getValue(now)),
+      width: this.entity?.polyline?.width?.getValue(now),
+      clampToGround: this.entity?.polyline?.clampToGround?.getValue(now)
+    }
   }
-  setStyle(params: { [key: string]: any }): void {
+  setStyle(params: PolylineStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color|material/gi.test(key)) continue
-        ; (this.entity.polyline as any)[key] = params[key] as any
+        ; (this.entity.polyline as any)[key] = (params as Record<string, unknown>)[key] as any
     }
     this.entity.polyline!.material =
       params.color && (Cesium.Color.fromCssColorString(params.color) as any)
@@ -123,7 +124,7 @@ export default class PolylineBase extends FeatureBase {
   toGeoJSON() {
     return {
       id: this.id,
-      featureConstructorName: this.constructor.name,
+      featureConstructorName: this.type,
       type: 'Feature',
       properties: { style: { ...this.getStyle() }, ...this.properties },
       geometry: {

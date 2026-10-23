@@ -1,6 +1,8 @@
-import { getPosition } from '../../utils'
+import * as Cesium from 'cesium'
+import { colorToCss, getPosition } from '../../utils'
 import { FeatureBase } from '../base'
 import { DrawEvents } from '../config'
+import type { PointStyle } from '../types'
 export default class PointBase extends FeatureBase {
   constructor(config: any) {
     super(config)
@@ -10,20 +12,21 @@ export default class PointBase extends FeatureBase {
   selected() {
     this.listener.emit(DrawEvents.CREATED, { geojson: this.toGeoJSON() })
   }
-  getStyle(): { [key: string]: any } {
-    const style: { [key: string]: any } = {}
-    style.color = this.entity?.point?.color?.getValue(new Cesium.JulianDate())
-    style.pixelSize = this.entity?.point?.pixelSize?.getValue(new Cesium.JulianDate())
-    style.heightReference = this.entity?.point?.heightReference?.getValue(new Cesium.JulianDate())
-    style.outlineColor = this.entity?.point?.outlineColor?.getValue(new Cesium.JulianDate())
-    style.outlineWidth = this.entity?.point?.outlineWidth?.getValue(new Cesium.JulianDate())
-    return style
+  getStyle(): PointStyle {
+    const now = new Cesium.JulianDate()
+    return {
+      color: colorToCss(this.entity?.point?.color?.getValue(now)),
+      pixelSize: this.entity?.point?.pixelSize?.getValue(now),
+      heightReference: this.entity?.point?.heightReference?.getValue(now),
+      outlineColor: colorToCss(this.entity?.point?.outlineColor?.getValue(now)),
+      outlineWidth: this.entity?.point?.outlineWidth?.getValue(now)
+    }
   }
-  setStyle(params: { [key: string]: any }): void {
+  setStyle(params: PointStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color/gi.test(key)) continue
-        ; (this.entity.point as any)[key] = params[key] as any
+        ; (this.entity.point as any)[key] = (params as Record<string, unknown>)[key] as any
     }
     this.entity.point!.color =
       params.color && (Cesium.Color.fromCssColorString(params.color) as any)

@@ -8,5 +8,5 @@
       "cesium-plot": ["../../packages/cesium-plot/src/index.ts"]
     }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "../../types/cesium.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.vue", "plugins/**/*.ts"]
 }

@@ -16,9 +16,10 @@
   </div>
 </template>
 <script setup lang="ts">
+import * as Cesium from "cesium";
 import { Plot, type GeoJson } from "cesium-plot";
 import { onMounted } from "vue";
-let plot: any;
+let plot: Plot;
 onMounted(async () => {
   // 修改默认定位为中国
   Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
@@ -62,8 +63,8 @@ onMounted(async () => {
     Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
   );
   plot = new Plot({ viewer });
-  plot.on("created", (params: any) => {
-    console.log("params:", params);
+  plot.on("created", ({ geojson }) => {
+    console.log("created:", geojson.featureConstructorName, geojson.properties.style);
   });
 });
 let exportData: GeoJson = { type: "FeatureCollection", features: [] };

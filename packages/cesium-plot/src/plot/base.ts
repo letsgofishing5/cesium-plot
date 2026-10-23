@@ -1,15 +1,27 @@
 
+import * as Cesium from 'cesium'
 import CesiumEvents from './core/event'
 import GeoJsonStore from './core/store'
 import { UUID } from '../utils'
 import { Prompt } from './prompt/prompt'
 import type Listener from './core/listener'
 import type { Point } from './src'
-import type { GeoJsonFeaturesExtend, GeoJsonGeometryType, MouseEvent } from './types'
+import type {
+  AnyFeatureStyle,
+  FeatureType,
+  GeoJsonFeature,
+  GeoJsonFeaturesExtend,
+  GeoJsonGeometryType,
+  MouseEvent
+} from './types'
 /**
  * 基类
  */
 export class FeatureBase {
+  /**
+   * 图元类型，子类必须声明，序列化为 featureConstructorName
+   */
+  static readonly type: string = ''
   /**
    * 实例id
    */
@@ -269,17 +281,22 @@ export class FeatureBase {
     this.coordinates.splice(idx, 1, Cesium.Cartesian3.fromDegrees(...vertex))
   }
   /**
-   * 获取样式
+   * 图元类型，来自子类的静态声明
    */
-  getStyle(): { [key: string]: any } {
-    // TODO:待完成
+  get type(): FeatureType {
+    return (this.constructor as typeof FeatureBase).type as FeatureType
+  }
+  /**
+   * 获取样式，颜色统一输出为 css 颜色字符串，可直接回传给 setStyle
+   */
+  getStyle(): AnyFeatureStyle {
     return {}
   }
   /**
    * 设置样式
-   * @param params
+   * @param style
    */
-  setStyle(params: { [key: string]: any }) { }
+  setStyle(style: AnyFeatureStyle) { }
   /**
    * 设置属性
    * @param key
@@ -329,16 +346,16 @@ export class FeatureBase {
    * 导出geojson数据
    * @returns
    */
-  toGeoJSON(): GeoJsonFeaturesExtend {
+  toGeoJSON(): GeoJsonFeature {
     return {
       id: this.id,
-      featureConstructorName: this.constructor.name,
+      featureConstructorName: this.type,
       type: 'Feature',
       properties: { style: { ...this.getStyle() }, ...this.properties },
       geometry: {
         coordinates: this.getVertexs(),
         type: this.geometryType
       }
-    } as any
+    } as GeoJsonFeature
   }
 }

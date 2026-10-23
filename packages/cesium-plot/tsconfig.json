@@ -3,5 +3,5 @@
   "compilerOptions": {
     "types": ["node"]
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "../../types/cesium.d.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts"]
 }

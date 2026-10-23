@@ -32,5 +32,8 @@ export default defineConfig({
       }
     }
   },
-  plugins: [dts({ insertTypesEntry: true, rollupTypes: false }), VitePluginStyleInject()]
+  plugins: [
+    dts({ outDir: 'dist/types', insertTypesEntry: false, rollupTypes: false }),
+    VitePluginStyleInject()
+  ]
 })

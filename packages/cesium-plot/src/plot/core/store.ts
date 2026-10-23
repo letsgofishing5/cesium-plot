@@ -1,3 +1,4 @@
+import * as Cesium from 'cesium'
 
 import type { FeatureBase } from '../base'
 import type { GeoJson } from '../types'

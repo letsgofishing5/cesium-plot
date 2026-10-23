@@ -24,16 +24,35 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-types.mjs",
     "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "cesium": "^1.146.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.21",
+    "cesium": "^1.146.0",
+    "rollup": "^4.0.0",
+    "rollup-plugin-dts": "^6.1.0",
     "terser": "^5.28.1",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",

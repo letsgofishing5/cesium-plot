@@ -1,7 +1,9 @@
+import * as Cesium from 'cesium'
 
 import PolygonBase from '../base/polygon'
 import type { MouseEvent } from '../types'
 export default class Polygon extends PolygonBase {
+  static readonly type = 'Polygon' as const
   constructor(config: any) {
     super(config)
   }

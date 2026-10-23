@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# cesium 静态资源（由 plugins/cesium.ts 自动同步）
+apps/playground/public/cesium/

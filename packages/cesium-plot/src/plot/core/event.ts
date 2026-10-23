@@ -1,3 +1,4 @@
+import * as Cesium from 'cesium'
 // cesium的事件
 
 import { getMousePosition } from '../../utils'

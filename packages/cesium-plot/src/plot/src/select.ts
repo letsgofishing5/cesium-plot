@@ -1,3 +1,4 @@
+import * as Cesium from 'cesium'
 import { FeatureBase } from '../base'
 import { getPosition, pickEntity } from '../../utils'
 
