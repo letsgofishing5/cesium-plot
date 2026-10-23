@@ -1,0 +1,11 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "types": ["node"],
+    "paths": {
+      "cesium-plot": ["../dist/index.d.ts"]
+    }
+  },
+  "include": ["*.test-d.ts"]
+}

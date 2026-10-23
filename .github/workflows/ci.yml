@@ -6,7 +6,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,9 +19,13 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
-      - run: pnpm typecheck
-      - run: pnpm build:lib
-      - run: pnpm build:demo
 
-      - name: Check package types
-        run: pnpm dlx @arethetypeswrong/cli --pack packages/cesium-plot
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm test
+
+      - run: pnpm build:lib
+      - run: pnpm test:types
+      - run: pnpm check:pkg
+
+      - run: pnpm build:demo

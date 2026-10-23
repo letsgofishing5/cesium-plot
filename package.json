@@ -15,6 +15,18 @@
     "build:lib": "pnpm --filter cesium-plot build",
     "build:demo": "pnpm --filter playground build",
     "preview": "pnpm --filter playground preview",
-    "typecheck": "pnpm -r --if-present run typecheck"
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm --filter cesium-plot test",
+    "test:types": "pnpm --filter cesium-plot test:types",
+    "lint": "oxlint packages apps",
+    "format": "prettier --write .",
+    "check:pkg": "publint packages/cesium-plot && attw --pack packages/cesium-plot",
+    "check": "pnpm typecheck && pnpm build:lib && pnpm test:types && pnpm check:pkg && pnpm lint"
+  },
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "oxlint": "^1.89.0",
+    "prettier": "^3.9.10",
+    "publint": "^0.3.25"
   }
 }

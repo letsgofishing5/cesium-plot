@@ -27,10 +27,16 @@ pnpm dev          # 启动演示项目，默认 http://localhost:5173
 | 命令 | 说明 |
 | --- | --- |
 | `pnpm dev` | 启动演示项目 |
-| `pnpm build:lib` | 构建标绘库（ESM + CJS + 单文件类型声明） |
+| `pnpm build:lib` | 构建标绘库（tsdown 输出 ESM + CJS + `.d.ts` / `.d.cts`） |
 | `pnpm build:demo` | 构建演示项目静态站点 |
 | `pnpm preview` | 预览演示项目构建产物 |
 | `pnpm typecheck` | 对各子包执行类型检查 |
+| `pnpm test` | 运行单元测试（vitest） |
+| `pnpm test:types` | 校验发布产物 `dist` 的对外类型 |
+| `pnpm lint` | oxlint 静态检查 |
+| `pnpm format` | prettier 格式化 |
+| `pnpm check:pkg` | publint + attw 校验包结构与类型入口 |
+| `pnpm check` | 依次执行类型检查、构建、类型测试、包校验、lint |
 
 ## 库文档
 
