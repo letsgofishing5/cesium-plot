@@ -56,18 +56,6 @@ export function pickEntity(viewer: Cesium.Viewer, position: Cesium.Cartesian2) {
 }
 
 /**
- * 将 Cesium.Color 转换为 css 颜色字符串
- * @param color
- * @returns
- */
-export function colorToCss(color: unknown): string | undefined {
-  if (!color) return undefined
-  if (typeof color === 'string') return color
-  if (color instanceof Cesium.Color) return color.toCssColorString()
-  return undefined
-}
-
-/**
  * 回到初始状态
  */
 export function flyHome(viewer: Cesium.Viewer) {

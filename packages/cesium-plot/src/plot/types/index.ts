@@ -98,6 +98,47 @@ export interface LabelClampStyle {
   outlineColor?: CssColor
 }
 
+/* ------------------------------ 读取样式快照 ------------------------------ */
+
+/**
+ * 读取样式的颜色是运行时 Cesium.Color，
+ * 与写入样式（css 颜色字符串）区分开，避免使用方误传。
+ */
+export interface PointStyleSnapshot extends Omit<PointStyle, 'color' | 'outlineColor'> {
+  color?: Cesium.Color
+  outlineColor?: Cesium.Color
+}
+
+export interface PolylineStyleSnapshot extends Omit<PolylineStyle, 'color'> {
+  color?: Cesium.Color
+}
+
+export interface PolygonStyleSnapshot extends Omit<PolygonStyle, 'color' | 'outlineColor'> {
+  color?: Cesium.Color
+  outlineColor?: Cesium.Color
+}
+
+export interface LabelStyleSnapshot
+  extends Omit<LabelStyle, 'fillColor' | 'outlineColor' | 'backgroundColor'> {
+  fillColor?: Cesium.Color
+  outlineColor?: Cesium.Color
+  backgroundColor?: Cesium.Color
+}
+
+/** 图元类型 -> 读取样式类型 */
+export interface FeatureStyleSnapshotMap {
+  Point: PointStyleSnapshot
+  Polyline: PolylineStyleSnapshot
+  Polygon: PolygonStyleSnapshot
+  Label: LabelStyleSnapshot
+  LabelClamp: LabelClampStyle
+  PolygonArrow: PolygonStyleSnapshot
+  Pencil: PolylineStyleSnapshot
+}
+
+/** 任意图元的读取样式 */
+export type AnyFeatureStyleSnapshot = FeatureStyleSnapshotMap[FeatureType]
+
 /** 图元类型 -> 样式类型 */
 export interface FeatureStyleMap {
   Point: PointStyle
@@ -136,7 +177,7 @@ interface GeoJsonFeatureCommon {
 /** 点类图元：Point、Label */
 export interface GeoJsonPointFeature extends GeoJsonFeatureCommon {
   featureConstructorName: 'Point' | 'Label'
-  properties: GeoJsonProperties & { style?: PointStyle | LabelStyle }
+  properties: GeoJsonProperties & { style?: PointStyleSnapshot | LabelStyleSnapshot }
   geometry: {
     type: 'Point'
     coordinates: LonLatHeight
@@ -146,7 +187,7 @@ export interface GeoJsonPointFeature extends GeoJsonFeatureCommon {
 /** 线类图元：Polyline、Pencil */
 export interface GeoJsonLineFeature extends GeoJsonFeatureCommon {
   featureConstructorName: 'Polyline' | 'Pencil'
-  properties: GeoJsonProperties & { style?: PolylineStyle }
+  properties: GeoJsonProperties & { style?: PolylineStyleSnapshot }
   geometry: {
     type: 'LineString'
     coordinates: LonLatHeight[]
@@ -156,7 +197,7 @@ export interface GeoJsonLineFeature extends GeoJsonFeatureCommon {
 /** 面类图元：Polygon、PolygonArrow、LabelClamp */
 export interface GeoJsonPolygonFeature extends GeoJsonFeatureCommon {
   featureConstructorName: 'Polygon' | 'PolygonArrow' | 'LabelClamp'
-  properties: GeoJsonProperties & { style?: PolygonStyle | LabelClampStyle }
+  properties: GeoJsonProperties & { style?: PolygonStyleSnapshot | LabelClampStyle }
   geometry: {
     type: 'Polygon'
     coordinates: LonLatHeight[][]

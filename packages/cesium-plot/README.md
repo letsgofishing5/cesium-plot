@@ -82,11 +82,13 @@ plot.updateEntityStyle(id, { color: '#ff0000', width: 2 })
 | `PlotMode` | 全部绘制模式 |
 | `FeatureType` | 可序列化的图元类型（不含 `Select`） |
 | `GeoJson` / `GeoJsonFeature` | 导出数据，按 `featureConstructorName` 判别几何类型 |
-| `PointStyle` / `PolylineStyle` / `PolygonStyle` / `LabelStyle` / `LabelClampStyle` | 各类图元样式 |
-| `FeatureStyleMap` / `AnyFeatureStyle` | 图元类型到样式的映射 |
+| `PointStyle` / `PolylineStyle` / `PolygonStyle` / `LabelStyle` / `LabelClampStyle` | 各类图元的**写入**样式 |
+| `*StyleSnapshot` | 各类图元的**读取**样式快照 |
+| `FeatureStyleMap` / `AnyFeatureStyle` | 图元类型到写入样式的映射 |
+| `FeatureStyleSnapshotMap` / `AnyFeatureStyleSnapshot` | 图元类型到读取样式的映射 |
 | `PlotEventMap` | 事件名到回调参数的映射 |
 
-样式中的颜色统一使用 css 颜色字符串，导出数据里的 `properties.style` 也同样是可直接回传给 `setStyle` 的格式。
+写入样式（`setStyle` / `updateEntityStyle`）的颜色使用 css 颜色字符串；读取样式（`getStyle`，以及导出数据里的 `properties.style`）的颜色是运行时 `Cesium.Color`，两者用不同（`*Style` / `*StyleSnapshot`）的类型区分。
 
 ## License
 

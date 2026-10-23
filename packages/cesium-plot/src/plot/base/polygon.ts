@@ -1,10 +1,16 @@
 import * as Cesium from 'cesium'
 import { FeatureBase } from '../base'
 
-import { colorToCss, getMousePosition } from '../../utils'
+import { getMousePosition } from '../../utils'
 import { Point } from '../src'
 import { DrawEvents } from '../config'
-import type { GeoJsonFeaturesExtend, MouseEvent, PolygonStyle } from '../types'
+import type {
+  FeatureType,
+  GeoJsonFeaturesExtend,
+  MouseEvent,
+  PolygonStyle,
+  PolygonStyleSnapshot
+} from '../types'
 export default class PolygonBase extends FeatureBase {
   /**
    * 上一个控制点的坐标位置
@@ -15,17 +21,17 @@ export default class PolygonBase extends FeatureBase {
     this.geometryType = 'Polygon'
     this.prompt.setText('单击确定起点位置')
   }
-  getStyle(): PolygonStyle {
-    const now = new Cesium.JulianDate()
-    return {
-      fill: this.entity?.polygon?.fill?.getValue(now),
-      color: colorToCss(this.entity?.polygon?.material?.getValue(now)),
-      height: this.entity?.polygon?.height?.getValue(now),
-      heightReference: this.entity?.polygon?.heightReference?.getValue(now),
-      outline: this.entity?.polygon?.outline?.getValue(now),
-      outlineColor: colorToCss(this.entity?.polygon?.outlineColor?.getValue(now)),
-      outlineWidth: this.entity?.polygon?.outlineWidth?.getValue(now)
-    }
+  getStyle(): PolygonStyleSnapshot {
+    const style: { [key: string]: any } = {}
+    style.fill = this.entity?.polygon?.fill?.getValue(new Cesium.JulianDate())
+    style.material = this.entity?.polygon?.material?.getValue(new Cesium.JulianDate())
+    style.color = style.material?.color
+    style.height = this.entity?.polygon?.height?.getValue(new Cesium.JulianDate())
+    style.heightReference = this.entity?.polygon?.heightReference?.getValue(new Cesium.JulianDate())
+    style.outline = this.entity?.polygon?.outline?.getValue(new Cesium.JulianDate())
+    style.outlineColor = this.entity?.polygon?.outlineColor?.getValue(new Cesium.JulianDate())
+    style.outlineWidth = this.entity?.polygon?.outlineWidth?.getValue(new Cesium.JulianDate())
+    return style
   }
   setStyle(params: PolygonStyle): void {
     if (!this.entity) return
@@ -146,7 +152,7 @@ export default class PolygonBase extends FeatureBase {
   toGeoJSON() {
     return {
       id: this.id,
-      featureConstructorName: this.type,
+      featureConstructorName: this.constructor.name as FeatureType,
       type: 'Feature',
       properties: { style: { ...this.getStyle() }, ...this.properties },
       geometry: {

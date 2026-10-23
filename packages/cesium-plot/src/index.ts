@@ -3,9 +3,11 @@ export type { PlotOptions } from './plot/plot'
 export { FeatureBase } from './plot/base'
 export type {
   AnyFeatureStyle,
+  AnyFeatureStyleSnapshot,
   CssColor,
   FeatureStyle,
   FeatureStyleMap,
+  FeatureStyleSnapshotMap,
   FeatureType,
   GeoJson,
   GeoJsonFeature,
@@ -17,11 +19,15 @@ export type {
   GeoJsonProperties,
   LabelClampStyle,
   LabelStyle,
+  LabelStyleSnapshot,
   LonLatHeight,
   MouseEvent as PlotMouseEvent,
   PlotEventMap,
   PlotMode,
   PointStyle,
+  PointStyleSnapshot,
   PolygonStyle,
-  PolylineStyle
+  PolygonStyleSnapshot,
+  PolylineStyle,
+  PolylineStyleSnapshot
 } from './plot/types'

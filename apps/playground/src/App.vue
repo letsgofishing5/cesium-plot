@@ -22,26 +22,20 @@ import { onMounted } from "vue";
 let plot: Plot;
 
 /**
- * 默认底图：配置了天地图 token 用天地图，否则用无需 token 的 OSM
+ * 默认底图（天地图）
  */
 function createBaseLayer() {
-  const token = import.meta.env.VITE_TIANDITU_TOKEN as string | undefined;
-  if (token) {
-    return new Cesium.ImageryLayer(
-      new Cesium.UrlTemplateImageryProvider({
-        url: `https://t4.tianditu.gov.cn/DataServer?tk=${token}&T=img_w&x={x}&y={y}&l={z}`,
-        maximumLevel: 18,
-      }),
-      {
-        gamma: 0.6, //伽马值
-        saturation: 1.4, //图层饱和度
-        brightness: 0.9, //整体亮度
-        contrast: 1, //对比度
-      }
-    );
-  }
   return new Cesium.ImageryLayer(
-    new Cesium.OpenStreetMapImageryProvider({ url: "https://tile.openstreetmap.org/" })
+    new Cesium.UrlTemplateImageryProvider({
+      url: `https://t4.tianditu.gov.cn/DataServer?tk=f729bf2a987c252d389f4e89ade8c297&T=img_w&x={x}&y={y}&l={z}`,
+      maximumLevel: 18,
+    }),
+    {
+      gamma: 0.6, //指定图像的伽马值
+      saturation: 1.4, //图层饱和度
+      brightness: 0.9, //指定图像的亮度
+      contrast: 1, //指定图像的对比度
+    }
   );
 }
 

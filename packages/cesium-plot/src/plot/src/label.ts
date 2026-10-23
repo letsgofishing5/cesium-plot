@@ -1,26 +1,27 @@
 import * as Cesium from 'cesium'
 import PointBase from '../base/point'
-import { colorToCss } from '../../utils'
-import type { LabelStyle, MouseEvent } from '../types'
+
+import type { LabelStyle, LabelStyleSnapshot, MouseEvent } from '../types'
 export default class Label extends PointBase {
-  static readonly type = 'Label' as const
   constructor(config: any) {
     super(config)
     this.prompt.setText('单击确定文字位置')
   }
-  getStyle(): LabelStyle {
-    const now = new Cesium.JulianDate()
-    return {
-      text: this.entity?.label?.text?.getValue(now),
-      showBackground: this.entity?.label?.showBackground?.getValue(now),
-      scale: this.entity?.label?.scale?.getValue(now) || 1,
-      heightReference: this.entity?.label?.heightReference?.getValue(now),
-      backgroundColor: colorToCss(this.entity?.label?.backgroundColor?.getValue(now)),
-      backgroundPadding: this.entity?.label?.backgroundPadding?.getValue(now),
-      fillColor: colorToCss(this.entity?.label?.fillColor?.getValue(now)),
-      outlineColor: colorToCss(this.entity?.label?.outlineColor?.getValue(now)),
-      outlineWidth: this.entity?.label?.outlineWidth?.getValue(now)
-    }
+  getStyle(): LabelStyleSnapshot {
+    const style: { [key: string]: any } = {}
+    style.text = this.entity?.label?.text?.getValue(new Cesium.JulianDate())
+    style.showBackground = this.entity?.label?.showBackground?.getValue(new Cesium.JulianDate())
+    style.scale = this.entity?.label?.scale?.getValue(new Cesium.JulianDate()) || 1
+    style.heightReference = this.entity?.label?.heightReference?.getValue(new Cesium.JulianDate())
+    style.showBackground = this.entity?.label?.showBackground?.getValue(new Cesium.JulianDate())
+    style.backgroundColor = this.entity?.label?.backgroundColor?.getValue(new Cesium.JulianDate())
+    style.backgroundPadding = this.entity?.label?.backgroundPadding?.getValue(
+      new Cesium.JulianDate()
+    )
+    style.fillColor = this.entity?.label?.fillColor?.getValue(new Cesium.JulianDate())
+    style.outlineColor = this.entity?.label?.outlineColor?.getValue(new Cesium.JulianDate())
+    style.outlineWidth = this.entity?.label?.outlineWidth?.getValue(new Cesium.JulianDate())
+    return style
   }
   setStyle(params: LabelStyle): void {
     if (!this.entity) return

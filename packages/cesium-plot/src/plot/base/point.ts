@@ -1,8 +1,8 @@
 import * as Cesium from 'cesium'
-import { colorToCss, getPosition } from '../../utils'
+import { getPosition } from '../../utils'
 import { FeatureBase } from '../base'
 import { DrawEvents } from '../config'
-import type { PointStyle } from '../types'
+import type { PointStyle, PointStyleSnapshot } from '../types'
 export default class PointBase extends FeatureBase {
   constructor(config: any) {
     super(config)
@@ -12,15 +12,14 @@ export default class PointBase extends FeatureBase {
   selected() {
     this.listener.emit(DrawEvents.CREATED, { geojson: this.toGeoJSON() })
   }
-  getStyle(): PointStyle {
-    const now = new Cesium.JulianDate()
-    return {
-      color: colorToCss(this.entity?.point?.color?.getValue(now)),
-      pixelSize: this.entity?.point?.pixelSize?.getValue(now),
-      heightReference: this.entity?.point?.heightReference?.getValue(now),
-      outlineColor: colorToCss(this.entity?.point?.outlineColor?.getValue(now)),
-      outlineWidth: this.entity?.point?.outlineWidth?.getValue(now)
-    }
+  getStyle(): PointStyleSnapshot {
+    const style: { [key: string]: any } = {}
+    style.color = this.entity?.point?.color?.getValue(new Cesium.JulianDate())
+    style.pixelSize = this.entity?.point?.pixelSize?.getValue(new Cesium.JulianDate())
+    style.heightReference = this.entity?.point?.heightReference?.getValue(new Cesium.JulianDate())
+    style.outlineColor = this.entity?.point?.outlineColor?.getValue(new Cesium.JulianDate())
+    style.outlineWidth = this.entity?.point?.outlineWidth?.getValue(new Cesium.JulianDate())
+    return style
   }
   setStyle(params: PointStyle): void {
     if (!this.entity) return

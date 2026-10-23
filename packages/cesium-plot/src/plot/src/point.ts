@@ -3,7 +3,6 @@ import * as Cesium from 'cesium'
 import PointBase from '../base/point'
 import type { MouseEvent } from '../types'
 export default class Point extends PointBase {
-  static readonly type = 'Point' as const
   constructor(config: any) {
     super(config)
   }

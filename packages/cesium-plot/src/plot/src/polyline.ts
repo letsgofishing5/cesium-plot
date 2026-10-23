@@ -4,7 +4,6 @@ import PolylineBase from '../base/polyline'
 import type { MouseEvent } from '../types'
 
 export default class Polyline extends PolylineBase {
-  static readonly type = 'Polyline' as const
   constructor(config: any) {
     super(config)
   }

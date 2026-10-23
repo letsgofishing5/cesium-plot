@@ -4,7 +4,6 @@ import { getMousePosition } from '../../utils'
 import PolylineBase from '../base/polyline'
 import type { MouseEvent } from '../types'
 export default class Pencil extends PolylineBase {
-  static readonly type = 'Pencil' as const
   constructor(config: any) {
     super(config)
     this.prompt.setText('鼠标左键按下移动鼠标开始画笔，鼠标左键弹起则画笔结束')

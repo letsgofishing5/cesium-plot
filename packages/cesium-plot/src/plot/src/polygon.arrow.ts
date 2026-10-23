@@ -4,7 +4,6 @@ import PolygonBase from '../base/polygon'
 import { getMousePosition } from '../../utils'
 import type { MouseEvent } from '../types'
 export default class PolygonArrow extends PolygonBase {
-  static readonly type = 'PolygonArrow' as const
   clickTimes: number
   constructor(config: any) {
     super(config)

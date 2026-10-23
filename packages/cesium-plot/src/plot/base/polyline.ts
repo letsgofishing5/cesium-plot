@@ -1,10 +1,16 @@
 import * as Cesium from 'cesium'
 import { FeatureBase } from '../base'
 
-import { colorToCss, getMousePosition } from '../../utils'
+import { getMousePosition } from '../../utils'
 import { Point } from '../src'
 import { DrawEvents } from '../config'
-import type { GeoJsonFeaturesExtend, MouseEvent, PolylineStyle } from '../types'
+import type {
+  FeatureType,
+  GeoJsonFeaturesExtend,
+  MouseEvent,
+  PolylineStyle,
+  PolylineStyleSnapshot
+} from '../types'
 
 export default class PolylineBase extends FeatureBase {
   /**
@@ -16,13 +22,13 @@ export default class PolylineBase extends FeatureBase {
     this.geometryType = 'LineString'
     this.prompt.setText('单击确定线段起点位置')
   }
-  getStyle(): PolylineStyle {
-    const now = new Cesium.JulianDate()
-    return {
-      color: colorToCss(this.entity?.polyline?.material?.getValue(now)),
-      width: this.entity?.polyline?.width?.getValue(now),
-      clampToGround: this.entity?.polyline?.clampToGround?.getValue(now)
-    }
+  getStyle(): PolylineStyleSnapshot {
+    const style: { [key: string]: any } = {}
+    style.material = this.entity?.polyline?.material?.getValue(new Cesium.JulianDate())
+    style.color = style.material?.color
+    style.width = this.entity?.polyline?.width?.getValue(new Cesium.JulianDate())
+    style.clampToGround = this.entity?.polyline?.clampToGround?.getValue(new Cesium.JulianDate())
+    return style
   }
   setStyle(params: PolylineStyle): void {
     if (!this.entity) return
@@ -124,7 +130,7 @@ export default class PolylineBase extends FeatureBase {
   toGeoJSON() {
     return {
       id: this.id,
-      featureConstructorName: this.type,
+      featureConstructorName: this.constructor.name as FeatureType,
       type: 'Feature',
       properties: { style: { ...this.getStyle() }, ...this.properties },
       geometry: {

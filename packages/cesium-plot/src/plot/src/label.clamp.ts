@@ -1,10 +1,9 @@
 import * as Cesium from 'cesium'
 import PolygonBase from '../base/polygon'
 
-import type { GeoJsonFeaturesExtend, MouseEvent } from '../types'
+import type { FeatureType, GeoJsonFeaturesExtend, MouseEvent } from '../types'
 
 export default class LabelClamp extends PolygonBase {
-  static readonly type = 'LabelClamp' as const
   /**
    * 图片材质
    */
@@ -204,7 +203,7 @@ export default class LabelClamp extends PolygonBase {
   toGeoJSON() {
     return {
       id: this.id,
-      featureConstructorName: this.type,
+      featureConstructorName: this.constructor.name as FeatureType,
       type: 'Feature',
       properties: { style: { ...this.getStyle() }, ...this.properties },
       geometry: {
