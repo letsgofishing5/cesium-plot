@@ -6,7 +6,7 @@ export default class Polygon extends PolygonBase {
   constructor(config: any) {
     super(config)
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const now = new Date().getTime()
     if (now - this.currentTimeStamp < 300) return
     this.currentTimeStamp = now
@@ -29,11 +29,11 @@ export default class Polygon extends PolygonBase {
     }
   }
 
-  onDbClick(event: MouseEvent): void {
+  override onDbClick(event: MouseEvent): void {
     this.removeVertex(this.currentVertexIdx)
     this.finish()
   }
-  onMouseMove(event: MouseEvent): void {
+  override onMouseMove(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat) {
       return this.prompt.closePrompt()
@@ -42,14 +42,14 @@ export default class Polygon extends PolygonBase {
     this.prompt.movePrompt(position)
     this.updateVertex(this.currentVertexIdx, lonlat)
   }
-  setCoordinates(coordinates: any): void {
+  override setCoordinates(coordinates: any): void {
     this.coordinates = Cesium.Cartesian3.fromDegreesArrayHeights(coordinates.flat())
   }
   getPolylineCoordinates() {
     if (this.vertexs.length < 2) return [new Cesium.Cartesian3(), new Cesium.Cartesian3()]
     return Cesium.Cartesian3.fromDegreesArrayHeights([...this.vertexs[0], ...this.vertexs[1]])
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     const showPolyline = this.vertexs.length <= 2
     this.entity = this.viewer.entities.add({
       id: this.id,

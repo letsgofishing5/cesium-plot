@@ -8,7 +8,7 @@ export default class Pencil extends PolylineBase {
     super(config)
     this.prompt.setText('鼠标左键按下移动鼠标开始画笔，鼠标左键弹起则画笔结束')
   }
-  onLeftDown(event: MouseEvent): void {
+  override onLeftDown(event: MouseEvent): void {
     const { lonlat } = event
     if (!lonlat) return
     this.viewer.scene.screenSpaceCameraController.enableRotate = false
@@ -19,7 +19,7 @@ export default class Pencil extends PolylineBase {
       Cesium.ScreenSpaceEventType.MOUSE_MOVE
     )
   }
-  onLeftUp(event: MouseEvent): void {
+  override onLeftUp(event: MouseEvent): void {
     this.screenEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE)
     this.viewer.scene.screenSpaceCameraController.enableRotate = true
     this.events.changeMode(Pencil, this)
@@ -31,7 +31,7 @@ export default class Pencil extends PolylineBase {
       this.addVertex(lonlat)
     }
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       polyline: {

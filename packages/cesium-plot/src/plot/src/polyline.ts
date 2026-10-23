@@ -7,7 +7,7 @@ export default class Polyline extends PolylineBase {
   constructor(config: any) {
     super(config)
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const now = new Date().getTime()
     if (now - this.currentTimeStamp < 300) return
     this.currentTimeStamp = now
@@ -23,11 +23,11 @@ export default class Polyline extends PolylineBase {
       this.createPrimitve()
     }
   }
-  onDbClick(event: MouseEvent): void {
+  override onDbClick(event: MouseEvent): void {
     this.vertexs.pop()
     this.finish()
   }
-  onMouseMove(event: MouseEvent): void {
+  override onMouseMove(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat) {
       return this.prompt.closePrompt()
@@ -37,10 +37,10 @@ export default class Polyline extends PolylineBase {
     if (this.vertexs.length < 1) return
     this.updateVertex(this.currentVertexIdx, lonlat)
   }
-  onRightClick(event: MouseEvent): void {
+  override onRightClick(event: MouseEvent): void {
     this.removeVertex(this.vertexs.length - 2)
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       polyline: {

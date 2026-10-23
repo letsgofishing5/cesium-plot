@@ -4,7 +4,7 @@ import { getPosition, pickEntity } from '../../utils'
 
 import type { MouseEvent } from '../types'
 export default class Select extends FeatureBase {
-  screenEventHandler: Cesium.ScreenSpaceEventHandler
+  override screenEventHandler: Cesium.ScreenSpaceEventHandler
   feature: FeatureBase | undefined
   selectIdx?: number
   constructor(config: any) {
@@ -13,14 +13,14 @@ export default class Select extends FeatureBase {
     this.feature = undefined
     this.id = ''
   }
-  start(): void {
+  override start(): void {
     this.currentVertexIdx = 0
       ; (this.viewer.container as HTMLElement).style.cursor = 'default'
   }
-  stop(): void {
+  override stop(): void {
     this.feature?.unSelected()
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const { position, lonlat } = event
     if (!lonlat) {
       this.unSelected()
@@ -39,20 +39,20 @@ export default class Select extends FeatureBase {
     // 选中回调
     this.feature?.selected(lonlat)
   }
-  unSelected(params?: any): void {
+  override unSelected(params?: any): void {
     this.prompt.close()
     this.feature?.unSelected()
     this.feature = undefined
   }
 
-  onRightClick(event: MouseEvent): void {
+  override onRightClick(event: MouseEvent): void {
     // 取消选择回调
     if (!this.feature) return
     const { position } = event
     this.prompt.moveRightMenu(position)
     this.prompt.showRightMenu([['delete', this.deleteCallback.bind(this)]])
   }
-  onLeftDown(event: MouseEvent): void {
+  override onLeftDown(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat || !this.entity) return
     this.id = pickEntity(this.viewer, position)
@@ -64,12 +64,12 @@ export default class Select extends FeatureBase {
       )
     }
   }
-  onLeftUp(event: MouseEvent): void {
+  override onLeftUp(event: MouseEvent): void {
     this.viewer.scene.screenSpaceCameraController.enableRotate = true
     this.screenEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE)
     this.feature?.mouseLeftBounceUp()
   }
-  onMouseMove(event: MouseEvent): void {
+  override onMouseMove(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat) return
     const primitive = this.viewer.scene.pick(position)

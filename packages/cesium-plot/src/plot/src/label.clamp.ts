@@ -23,7 +23,7 @@ export default class LabelClamp extends PolygonBase {
     }
     this.prompt.setText('单击确定文字起点位置')
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const { lonlat } = event
     if (!lonlat) return
     if (this.vertexs.length === 0) {
@@ -36,7 +36,7 @@ export default class LabelClamp extends PolygonBase {
       this.events.changeMode('LabelClamp', this)
     }
   }
-  onMouseMove(event: MouseEvent): void {
+  override onMouseMove(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat) {
       return this.prompt.closePrompt()
@@ -46,12 +46,12 @@ export default class LabelClamp extends PolygonBase {
     if (this.vertexs.length === 0) return
     this.updateVertex(this.currentVertexIdx + 1, lonlat)
   }
-  updateCoordinates(idx: number, vertex: [number, number, number]): void {
+  override updateCoordinates(idx: number, vertex: [number, number, number]): void {
     if (this.vertexs.length === 2) {
       this.setCoordinates(this.computedRect(this.vertexs[0], this.vertexs[1]))
     }
   }
-  setCoordinates(vertexs: any): void {
+  override setCoordinates(vertexs: any): void {
     if (Array.isArray(vertexs) && vertexs.length === 2) {
       this.setCoordinates(this.computedRect(vertexs[0], vertexs[1]))
     } else {
@@ -72,10 +72,10 @@ export default class LabelClamp extends PolygonBase {
     const westSouth = [startPoint[0], endPoint[1], 0]
     return [westNorth, eastNorth, eastWest, westSouth]
   }
-  getStyle(): { [key: string]: any } {
+  override getStyle(): { [key: string]: any } {
     return this.properties.style
   }
-  setStyle(params: { [key: string]: any }): void {
+  override setStyle(params: { [key: string]: any }): void {
     if (!this.entity) return
     this.properties.style = Object.assign(this.properties.style, params)
     this.createImageMaterial(this.properties.style)
@@ -84,7 +84,7 @@ export default class LabelClamp extends PolygonBase {
       transparent: true
     })
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       polygon: {
@@ -181,7 +181,7 @@ export default class LabelClamp extends PolygonBase {
     this.imgMaterial = canvas.toDataURL('image/png') // 转换为PNG格式数据URL
   }
 
-  createFromGeoJSON(json: GeoJsonFeaturesExtend) {
+  override createFromGeoJSON(json: GeoJsonFeaturesExtend) {
     const { geometry, properties, id } = json
     this.id = id
     this.setVertexs(geometry.coordinates.flat())
@@ -190,7 +190,7 @@ export default class LabelClamp extends PolygonBase {
     this.stores.addFeature(this)
     this.properties = properties
   }
-  isValidGeoJSON(): boolean {
+  override isValidGeoJSON(): boolean {
     if (this.vertexs.length < 2) return false
     if (this.vertexs.length === 2) {
       const p1 = Cesium.Cartesian3.fromDegrees(...this.vertexs[0])
@@ -200,7 +200,7 @@ export default class LabelClamp extends PolygonBase {
     }
     return true
   }
-  toGeoJSON() {
+  override toGeoJSON() {
     return {
       id: this.id,
       featureConstructorName: this.constructor.name as FeatureType,

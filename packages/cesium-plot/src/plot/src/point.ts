@@ -6,16 +6,16 @@ export default class Point extends PointBase {
   constructor(config: any) {
     super(config)
   }
-  setCoordinates(vertexs: any) {
+  override setCoordinates(vertexs: any) {
     this.coordinates = vertexs
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     if (!event.lonlat) return
     this.setVertexs(event.lonlat)
     this.createPrimitve()
     this.finish()
   }
-  createPrimitve(): void {
+  override createPrimitve(): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       position: new Cesium.CallbackProperty(() => {

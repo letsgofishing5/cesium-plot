@@ -10,7 +10,7 @@ export default class PolygonArrow extends PolygonBase {
     this.clickTimes = 0
     this.prompt.setText('单击选择箭头开始位置')
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const now = new Date().getTime()
     if (now - this.currentTimeStamp < 300) return
     this.currentTimeStamp = now
@@ -155,7 +155,7 @@ export default class PolygonArrow extends PolygonBase {
       Math.pow(endPoint[0] - startPoint[0], 2) + Math.pow(endPoint[1] - startPoint[1], 2)
     )
   }
-  move(cartesian: Cesium.Cartesian2, id?: string | undefined): void {
+  override move(cartesian: Cesium.Cartesian2, id?: string | undefined): void {
     // 转换移动过程中的坐标经纬度
     const { lonlat } = getMousePosition(this.viewer, cartesian)
     // 如果传递了下标，则代表当前的移动操作是操作某个点的
@@ -186,7 +186,7 @@ export default class PolygonArrow extends PolygonBase {
       this.preControlPointPosition = lonlat
     }
   }
-  onMouseMove(event: MouseEvent): void {
+  override onMouseMove(event: MouseEvent): void {
     const { lonlat, position } = event
     if (!lonlat) {
       return this.prompt.closePrompt()
@@ -196,18 +196,18 @@ export default class PolygonArrow extends PolygonBase {
     this.updateVertex(this.currentVertexIdx, lonlat)
     if (this.vertexs.length >= 2) this.computedArrowPoints()
   }
-  setCoordinates(coordinates: any): void {
+  override setCoordinates(coordinates: any): void {
     this.coordinates = coordinates
   }
   getPolylineCoordinates() {
     if (this.vertexs.length < 2) return [new Cesium.Cartesian3(), new Cesium.Cartesian3()]
     return Cesium.Cartesian3.fromDegreesArrayHeights([...this.vertexs[0], ...this.vertexs[1]])
   }
-  finish(): void {
+  override finish(): void {
     this.clickTimes = 0
     this.events.changeMode(PolygonArrow, this)
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       polygon: {

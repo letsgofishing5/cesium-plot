@@ -7,7 +7,7 @@ export default class Label extends PointBase {
     super(config)
     this.prompt.setText('单击确定文字位置')
   }
-  getStyle(): LabelStyleSnapshot {
+  override getStyle(): LabelStyleSnapshot {
     const style: { [key: string]: any } = {}
     style.text = this.entity?.label?.text?.getValue(new Cesium.JulianDate())
     style.showBackground = this.entity?.label?.showBackground?.getValue(new Cesium.JulianDate())
@@ -23,7 +23,7 @@ export default class Label extends PointBase {
     style.outlineWidth = this.entity?.label?.outlineWidth?.getValue(new Cesium.JulianDate())
     return style
   }
-  setStyle(params: LabelStyle): void {
+  override setStyle(params: LabelStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color/gi.test(key)) continue
@@ -36,7 +36,7 @@ export default class Label extends PointBase {
     this.entity.label!.backgroundColor =
       params.backgroundColor && (Cesium.Color.fromCssColorString(params.backgroundColor) as any)
   }
-  onClick(event: MouseEvent): void {
+  override onClick(event: MouseEvent): void {
     const now = new Date().getTime()
     if (now - this.currentTimeStamp < 300) return
     this.currentTimeStamp = now
@@ -45,7 +45,7 @@ export default class Label extends PointBase {
     this.createPrimitve()
     this.events.changeMode('Label', this)
   }
-  createPrimitve(params?: any): void {
+  override createPrimitve(params?: any): void {
     this.entity = this.viewer.entities.add({
       id: this.id,
       position: new Cesium.CallbackProperty(() => {

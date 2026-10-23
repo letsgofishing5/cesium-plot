@@ -21,7 +21,7 @@ export default class PolygonBase extends FeatureBase {
     this.geometryType = 'Polygon'
     this.prompt.setText('单击确定起点位置')
   }
-  getStyle(): PolygonStyleSnapshot {
+  override getStyle(): PolygonStyleSnapshot {
     const style: { [key: string]: any } = {}
     style.fill = this.entity?.polygon?.fill?.getValue(new Cesium.JulianDate())
     style.material = this.entity?.polygon?.material?.getValue(new Cesium.JulianDate())
@@ -33,7 +33,7 @@ export default class PolygonBase extends FeatureBase {
     style.outlineWidth = this.entity?.polygon?.outlineWidth?.getValue(new Cesium.JulianDate())
     return style
   }
-  setStyle(params: PolygonStyle): void {
+  override setStyle(params: PolygonStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color|material/gi.test(key)) continue
@@ -57,23 +57,23 @@ export default class PolygonBase extends FeatureBase {
     point.setVertexs(position)
     this.pointFeatures.set(point.id, [idx, point])
   }
-  mouseLeftBounceUp(): void {
+  override mouseLeftBounceUp(): void {
     this.preControlPointPosition = undefined
   }
-  unSelected(params?: any): void {
+  override unSelected(params?: any): void {
     this.pointFeatures.forEach((item) => {
       item[1].remove()
     })
     this.pointFeatures.clear()
   }
-  selected(params?: any) {
+  override selected(params?: any) {
     this.listener.emit(DrawEvents.CREATED, { geojson: this.toGeoJSON() })
     if (this.pointFeatures.size) return
     this.vertexs.forEach((item, idx) => {
       this.createControlPointPrimitive(idx, item)
     })
   }
-  onRightClick(event: MouseEvent): void {
+  override onRightClick(event: MouseEvent): void {
     this.removeVertex(this.vertexs.length - 2)
     if (this.vertexs.length === 2) {
       this.prompt.setText('单击选中下一个点位置，右击回撤一步')
@@ -81,7 +81,7 @@ export default class PolygonBase extends FeatureBase {
       this.prompt.setText('单击选中下一个点位置，双击完成绘制，右击回撤一步')
     }
   }
-  removeVertex(idx: number): void {
+  override removeVertex(idx: number): void {
     if (idx < 0 || idx >= this.vertexs.length) return
     if (idx <= 0) {
       this.remove()
@@ -95,7 +95,7 @@ export default class PolygonBase extends FeatureBase {
     if (!this.entity) return
     this.entity.polyline!.show = (this.vertexs.length === 2) as any
   }
-  move(cartesian: Cesium.Cartesian2, id?: string | undefined): void {
+  override move(cartesian: Cesium.Cartesian2, id?: string | undefined): void {
     // 转换移动过程中的坐标经纬度
     const { lonlat } = getMousePosition(this.viewer, cartesian)
     // 如果传递了下标，则代表当前的移动操作是操作某个点的
@@ -125,7 +125,7 @@ export default class PolygonBase extends FeatureBase {
       this.preControlPointPosition = lonlat
     }
   }
-  isValidGeoJSON(): boolean {
+  override isValidGeoJSON(): boolean {
     if (this.vertexs.length < 3) return false
     if (this.vertexs.length === 2) {
       const p1 = Cesium.Cartesian3.fromDegrees(...this.vertexs[0])
@@ -141,7 +141,7 @@ export default class PolygonBase extends FeatureBase {
     }
     return true
   }
-  createFromGeoJSON(json: GeoJsonFeaturesExtend) {
+  override createFromGeoJSON(json: GeoJsonFeaturesExtend) {
     const { geometry, properties, id } = json
     this.id = id
     this.setVertexs(geometry.coordinates.flat())
@@ -149,7 +149,7 @@ export default class PolygonBase extends FeatureBase {
     this.stores.addFeature(this)
     this.properties = properties
   }
-  toGeoJSON() {
+  override toGeoJSON() {
     return {
       id: this.id,
       featureConstructorName: this.constructor.name as FeatureType,

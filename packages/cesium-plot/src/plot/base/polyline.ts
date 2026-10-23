@@ -22,7 +22,7 @@ export default class PolylineBase extends FeatureBase {
     this.geometryType = 'LineString'
     this.prompt.setText('单击确定线段起点位置')
   }
-  getStyle(): PolylineStyleSnapshot {
+  override getStyle(): PolylineStyleSnapshot {
     const style: { [key: string]: any } = {}
     style.material = this.entity?.polyline?.material?.getValue(new Cesium.JulianDate())
     style.color = style.material?.color
@@ -30,7 +30,7 @@ export default class PolylineBase extends FeatureBase {
     style.clampToGround = this.entity?.polyline?.clampToGround?.getValue(new Cesium.JulianDate())
     return style
   }
-  setStyle(params: PolylineStyle): void {
+  override setStyle(params: PolylineStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color|material/gi.test(key)) continue
@@ -52,14 +52,14 @@ export default class PolylineBase extends FeatureBase {
     point.setVertexs(position)
     this.pointFeatures.set(point.id, [idx, point])
   }
-  selected(cartesian: [number, number, number]) {
+  override selected(cartesian: [number, number, number]) {
     this.listener.emit(DrawEvents.CREATED, { geojson: this.toGeoJSON() })
     if (this.pointFeatures.size) return
     this.vertexs.forEach((item, idx) => {
       this.createControlPointPrimitive(idx, item)
     })
   }
-  unSelected(): void {
+  override unSelected(): void {
     this.pointFeatures.forEach((item) => {
       item[1].remove()
     })
@@ -69,10 +69,10 @@ export default class PolylineBase extends FeatureBase {
   /**
    * 鼠标左键弹起
    */
-  mouseLeftBounceUp(): void {
+  override mouseLeftBounceUp(): void {
     this.preControlPointPosition = undefined
   }
-  move(cartesian: Cesium.Cartesian2, id?: string): void {
+  override move(cartesian: Cesium.Cartesian2, id?: string): void {
     // 转换移动过程中的坐标经纬度
     const { lonlat } = getMousePosition(this.viewer, cartesian)
     // 如果传递了下标，则代表当前的移动操作是操作某个点的
@@ -102,7 +102,7 @@ export default class PolylineBase extends FeatureBase {
       this.preControlPointPosition = lonlat
     }
   }
-  removeVertex(idx: number): void {
+  override removeVertex(idx: number): void {
     if (idx < 0 || idx >= this.vertexs.length) return
     if (idx === 0) {
       this.remove()
@@ -115,7 +115,7 @@ export default class PolylineBase extends FeatureBase {
     this.removeCoordinates(idx)
   }
 
-  isValidGeoJSON(): boolean {
+  override isValidGeoJSON(): boolean {
     if (!this.vertexs.length) return false
     if (this.vertexs.length === 2) {
       const p1 = Cesium.Cartesian3.fromDegrees(...this.vertexs[0])
@@ -127,7 +127,7 @@ export default class PolylineBase extends FeatureBase {
     }
     return true
   }
-  toGeoJSON() {
+  override toGeoJSON() {
     return {
       id: this.id,
       featureConstructorName: this.constructor.name as FeatureType,
@@ -139,7 +139,7 @@ export default class PolylineBase extends FeatureBase {
       }
     } as GeoJsonFeaturesExtend
   }
-  createFromGeoJSON(json: GeoJsonFeaturesExtend) {
+  override createFromGeoJSON(json: GeoJsonFeaturesExtend) {
     const { geometry, properties, id } = json
     this.id = id
     this.setVertexs(geometry.coordinates)

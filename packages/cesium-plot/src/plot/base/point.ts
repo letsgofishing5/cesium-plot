@@ -9,10 +9,10 @@ export default class PointBase extends FeatureBase {
     this.geometryType = 'Point'
     this.prompt.setText('单击确定点位置')
   }
-  selected() {
+  override selected() {
     this.listener.emit(DrawEvents.CREATED, { geojson: this.toGeoJSON() })
   }
-  getStyle(): PointStyleSnapshot {
+  override getStyle(): PointStyleSnapshot {
     const style: { [key: string]: any } = {}
     style.color = this.entity?.point?.color?.getValue(new Cesium.JulianDate())
     style.pixelSize = this.entity?.point?.pixelSize?.getValue(new Cesium.JulianDate())
@@ -21,7 +21,7 @@ export default class PointBase extends FeatureBase {
     style.outlineWidth = this.entity?.point?.outlineWidth?.getValue(new Cesium.JulianDate())
     return style
   }
-  setStyle(params: PointStyle): void {
+  override setStyle(params: PointStyle): void {
     if (!this.entity) return
     for (const key in params) {
       if (/color/gi.test(key)) continue
@@ -32,7 +32,7 @@ export default class PointBase extends FeatureBase {
     this.entity.point!.outlineColor =
       params.outlineColor && (Cesium.Color.fromCssColorString(params.outlineColor) as any)
   }
-  move(cartesian: Cesium.Cartesian2) {
+  override move(cartesian: Cesium.Cartesian2) {
     const cartesian3 = getPosition(this.viewer, cartesian)
     if (!cartesian3) return
     if (!this.entity) return
