@@ -2,7 +2,6 @@ import { fileURLToPath, URL } from 'node:url'
 import { readFileSync } from 'node:fs'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import VitePluginStyleInject from 'vite-plugin-style-inject'
 
 const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'))
 const external = [
@@ -32,8 +31,5 @@ export default defineConfig({
       }
     }
   },
-  plugins: [
-    dts({ outDir: 'dist/types', insertTypesEntry: false, rollupTypes: false }),
-    VitePluginStyleInject()
-  ]
+  plugins: [dts({ outDir: 'dist/types', insertTypesEntry: false, rollupTypes: false })]
 })

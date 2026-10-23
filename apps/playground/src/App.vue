@@ -20,6 +20,45 @@ import * as Cesium from "cesium";
 import { Plot, type GeoJson } from "cesium-plot";
 import { onMounted } from "vue";
 let plot: Plot;
+
+/**
+ * 默认底图：配置了天地图 token 用天地图，否则用无需 token 的 OSM
+ */
+function createBaseLayer() {
+  const token = import.meta.env.VITE_TIANDITU_TOKEN as string | undefined;
+  if (token) {
+    return new Cesium.ImageryLayer(
+      new Cesium.UrlTemplateImageryProvider({
+        url: `https://t4.tianditu.gov.cn/DataServer?tk=${token}&T=img_w&x={x}&y={y}&l={z}`,
+        maximumLevel: 18,
+      }),
+      {
+        gamma: 0.6, //伽马值
+        saturation: 1.4, //图层饱和度
+        brightness: 0.9, //整体亮度
+        contrast: 1, //对比度
+      }
+    );
+  }
+  return new Cesium.ImageryLayer(
+    new Cesium.OpenStreetMapImageryProvider({ url: "https://tile.openstreetmap.org/" })
+  );
+}
+
+/**
+ * 地形服务加载失败时降级为椭球体，避免整个演示白屏
+ */
+async function createTerrain() {
+  try {
+    return await Cesium.CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain", {
+      requestMetadata: false,
+    });
+  } catch (error) {
+    console.warn("[playground] 地形服务不可用，已降级为椭球体", error);
+    return undefined;
+  }
+}
+
 onMounted(async () => {
   // 修改默认定位为中国
   Cesium.Camera.DEFAULT_VIEW_RECTANGLE = Cesium.Rectangle.fromDegrees(
@@ -39,24 +78,8 @@ onMounted(async () => {
     baseLayerPicker: false, //控制地图选择器（可以选择多种地图的方框按钮）是否显示
     infoBox: false,
     selectionIndicator: false,
-    baseLayer: new Cesium.ImageryLayer( //开启默认底图（天地图）
-      new Cesium.UrlTemplateImageryProvider({
-        url: `https://t4.tianditu.gov.cn/DataServer?tk=f729bf2a987c252d389f4e89ade8c297&T=img_w&x={x}&y={y}&l={z}`,
-        maximumLevel: 18,
-      }),
-      {
-        gamma: 0.6, //指定图像的伽马值，可以调整图像的色彩和对比度。
-        saturation: 1.4, //图层饱和度
-        brightness: 0.9, //指定图像的亮度，可以调整图像的整体亮度。
-        contrast: 1, //指定图像的对比度，可以调整图像的明暗程度。
-      }
-    ),
-    terrainProvider: await Cesium.CesiumTerrainProvider.fromUrl(
-      "https://data.mars3d.cn/terrain",
-      {
-        requestMetadata: false,
-      }
-    ),
+    baseLayer: createBaseLayer(),
+    terrainProvider: await createTerrain(),
   });
   // 关闭鼠标双击entity时，摄像机移动效果
   viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(

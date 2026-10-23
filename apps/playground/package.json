@@ -12,13 +12,13 @@
   "dependencies": {
     "cesium": "^1.146.0",
     "cesium-plot": "workspace:*",
-    "vue": "^3.4.15"
+    "vue": "^3.5.44"
   },
   "devDependencies": {
-    "@types/node": "^20.11.21",
-    "@vitejs/plugin-vue": "^5.0.3",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.0",
+    "@types/node": "^22.19.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
     "vue-tsc": "^3.3.13"
   }
 }

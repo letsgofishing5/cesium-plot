@@ -21,6 +21,14 @@
     "url": "git+https://github.com/letsgofishing5/cesium-plot.git",
     "directory": "packages/cesium-plot"
   },
+  "homepage": "https://github.com/letsgofishing5/cesium-plot#readme",
+  "bugs": {
+    "url": "https://github.com/letsgofishing5/cesium-plot/issues"
+  },
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -49,14 +57,13 @@
     "cesium": "^1.146.0"
   },
   "devDependencies": {
-    "@types/node": "^20.11.21",
+    "@types/node": "^22.19.0",
     "cesium": "^1.146.0",
-    "rollup": "^4.0.0",
-    "rollup-plugin-dts": "^6.1.0",
-    "terser": "^5.28.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.1.0",
-    "vite-plugin-dts": "^3.7.3",
-    "vite-plugin-style-inject": "^0.0.1"
+    "rollup": "^4.64.0",
+    "rollup-plugin-dts": "^6.5.1",
+    "terser": "^5.51.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.5",
+    "vite-plugin-dts": "^5.1.2"
   }
 }

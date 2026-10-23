@@ -1,4 +1,5 @@
-import './prompt.css'
+import promptCss from './prompt.css?inline'
+import { injectStyle } from '../../utils'
 import type { ElementConfit } from './types'
 export class Prompt {
   prompt: HTMLElement
@@ -7,6 +8,7 @@ export class Prompt {
   callbackMap: Map<string, (param?: any) => void>
   fn: () => void
   constructor() {
+    injectStyle(promptCss)
     this.rightMenu = this.createRightMenu()
     this.prompt = this.createPrompt()
     this.fn = () => { }
