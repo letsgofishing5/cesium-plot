@@ -1,6 +1,12 @@
 # cesium-plot
 
+[![npm](https://img.shields.io/npm/v/cesium-plot.svg)](https://www.npmjs.com/package/cesium-plot)
+[![license](https://img.shields.io/npm/l/cesium-plot.svg)](./LICENSE)
+[![demo](https://img.shields.io/badge/demo-online-brightgreen)](https://letsgofishing5.github.io/cesium-plot/)
+
 基于 Cesium 的基础标绘库，支持点、线、面、文字、贴地文字、箭头、画笔，以及 GeoJSON 导入导出、样式修改、选中/拖拽编辑等能力。
+
+在线演示：<https://letsgofishing5.github.io/cesium-plot/>
 
 仓库采用 pnpm monorepo 结构：
 

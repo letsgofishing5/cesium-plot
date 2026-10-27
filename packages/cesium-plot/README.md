@@ -1,6 +1,11 @@
 # cesium-plot
 
+[![npm](https://img.shields.io/npm/v/cesium-plot.svg)](https://www.npmjs.com/package/cesium-plot)
+[![license](https://img.shields.io/npm/l/cesium-plot.svg)](../../LICENSE)
+
 基于 Cesium 的基础标绘库，内置点、线、面、文字、贴地文字、箭头、画笔，支持 GeoJSON 导入导出、样式修改、选中与拖拽编辑。内置完整的 TypeScript 类型。
+
+在线演示：<https://letsgofishing5.github.io/cesium-plot/>
 
 ## 安装
 
