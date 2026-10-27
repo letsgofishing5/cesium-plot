@@ -31,3 +31,6 @@ apps/playground/public/cesium/
 
 # 打包产物
 *.tgz
+
+# 本地消费者测试
+.consumer/

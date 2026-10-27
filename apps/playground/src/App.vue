@@ -23,7 +23,9 @@
         <button type="button" :class="{ active: mode === 'PolygonArrow' }" @click="drawArrow">
           箭头
         </button>
-        <button type="button" :class="{ active: mode === 'Pencil' }" @click="drawBrush">画笔</button>
+        <button type="button" :class="{ active: mode === 'Pencil' }" @click="drawBrush">
+          画笔
+        </button>
       </div>
     </div>
 
@@ -48,23 +50,23 @@
 </template>
 
 <script setup lang="ts">
-import * as Cesium from "cesium";
-import { Plot, type GeoJson } from "cesium-plot";
-import { computed, onMounted, ref } from "vue";
+import * as Cesium from 'cesium'
+import { Plot, type GeoJson } from 'cesium-plot'
+import { computed, onMounted, ref } from 'vue'
 
-let plot: Plot;
+let plot: Plot
 
-const mode = ref("Select");
-const toast = ref("");
-const hint = ref("单击「点」开始绘制");
+const mode = ref('Select')
+const toast = ref('')
+const hint = ref('单击「点」开始绘制')
 
-const modeLabel = computed(() => (mode.value === "Points" ? "Point（连续）" : mode.value));
+const modeLabel = computed(() => (mode.value === 'Points' ? 'Point（连续）' : mode.value))
 
-let toastTimer: ReturnType<typeof setTimeout> | undefined;
+let toastTimer: ReturnType<typeof setTimeout> | undefined
 function showToast(text: string) {
-  toast.value = text;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => (toast.value = ""), 1800);
+  toast.value = text
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => (toast.value = ''), 1800)
 }
 
 /**
@@ -74,15 +76,15 @@ function createBaseLayer() {
   return new Cesium.ImageryLayer(
     new Cesium.UrlTemplateImageryProvider({
       url: `https://t4.tianditu.gov.cn/DataServer?tk=f729bf2a987c252d389f4e89ade8c297&T=img_w&x={x}&y={y}&l={z}`,
-      maximumLevel: 18,
+      maximumLevel: 18
     }),
     {
       gamma: 0.6, //指定图像的伽马值
       saturation: 1.4, //图层饱和度
       brightness: 0.9, //指定图像的亮度
-      contrast: 1, //指定图像的对比度
+      contrast: 1 //指定图像的对比度
     }
-  );
+  )
 }
 
 /**
@@ -90,12 +92,12 @@ function createBaseLayer() {
  */
 async function createTerrain() {
   try {
-    return await Cesium.CesiumTerrainProvider.fromUrl("https://data.mars3d.cn/terrain", {
-      requestMetadata: false,
-    });
+    return await Cesium.CesiumTerrainProvider.fromUrl('https://data.mars3d.cn/terrain', {
+      requestMetadata: false
+    })
   } catch (error) {
-    console.warn("[playground] 地形服务不可用，已降级为椭球体", error);
-    return undefined;
+    console.warn('[playground] 地形服务不可用，已降级为椭球体', error)
+    return undefined
   }
 }
 
@@ -106,8 +108,8 @@ onMounted(async () => {
     0.0, // 南
     140.0, // 西
     60.0 // 北
-  );
-  const viewer = new Cesium.Viewer("cesiumContainer", {
+  )
+  const viewer = new Cesium.Viewer('cesiumContainer', {
     geocoder: false, //控制窗口是否显示搜索框
     homeButton: false, //控制回到主页按钮是否显示
     animation: false, //控制底下的动画控制控件是否显示
@@ -119,84 +121,84 @@ onMounted(async () => {
     infoBox: false,
     selectionIndicator: false,
     baseLayer: createBaseLayer(),
-    terrainProvider: await createTerrain(),
-  });
+    terrainProvider: await createTerrain()
+  })
   // 关闭鼠标双击entity时，摄像机移动效果
   viewer.cesiumWidget.screenSpaceEventHandler.removeInputAction(
     Cesium.ScreenSpaceEventType.LEFT_DOUBLE_CLICK
-  );
-  plot = new Plot({ viewer });
-  plot.on("created", ({ geojson }) => {
-    console.log("created:", geojson.featureConstructorName, geojson.properties.style);
-  });
-});
+  )
+  plot = new Plot({ viewer })
+  plot.on('created', ({ geojson }) => {
+    console.log('created:', geojson.featureConstructorName, geojson.properties.style)
+  })
+})
 
-let exportData: GeoJson = { type: "FeatureCollection", features: [] };
+let exportData: GeoJson = { type: 'FeatureCollection', features: [] }
 
 function drawPoint() {
-  plot.changeMode("Point", false);
-  mode.value = "Point";
-  hint.value = "单击确定点位置，仅绘制一次";
+  plot.changeMode('Point', false)
+  mode.value = 'Point'
+  hint.value = '单击确定点位置，仅绘制一次'
 }
 
 function drawPoints() {
   // 第二个参数默认为true，即连续绘制，设置为false则不能连绘
-  plot.changeMode("Point");
-  mode.value = "Points";
-  hint.value = "连续绘制，右键回撤，切换模式结束";
+  plot.changeMode('Point')
+  mode.value = 'Points'
+  hint.value = '连续绘制，右键回撤，切换模式结束'
 }
 function drawLine() {
-  plot.changeMode("Polyline", false);
-  mode.value = "Polyline";
-  hint.value = "单击确定起点，双击完成绘制";
+  plot.changeMode('Polyline', false)
+  mode.value = 'Polyline'
+  hint.value = '单击确定起点，双击完成绘制'
 }
 function drawFace() {
-  plot.changeMode("Polygon");
-  mode.value = "Polygon";
-  hint.value = "单击确定起点，双击完成绘制";
+  plot.changeMode('Polygon')
+  mode.value = 'Polygon'
+  hint.value = '单击确定起点，双击完成绘制'
 }
 function drawWord() {
-  plot.changeMode("Label");
-  mode.value = "Label";
-  hint.value = "单击确定文字位置";
+  plot.changeMode('Label')
+  mode.value = 'Label'
+  hint.value = '单击确定文字位置'
 }
 function drawClampWord() {
-  plot.changeMode("LabelClamp");
-  mode.value = "LabelClamp";
-  hint.value = "单击起点，移动鼠标确定范围";
+  plot.changeMode('LabelClamp')
+  mode.value = 'LabelClamp'
+  hint.value = '单击起点，移动鼠标确定范围'
 }
 function drawArrow() {
-  plot.changeMode("PolygonArrow");
-  mode.value = "PolygonArrow";
-  hint.value = "单击起点，再次单击确定箭头";
+  plot.changeMode('PolygonArrow')
+  mode.value = 'PolygonArrow'
+  hint.value = '单击起点，再次单击确定箭头'
 }
 function drawBrush() {
-  plot.changeMode("Pencil");
-  mode.value = "Pencil";
-  hint.value = "按住左键移动绘制，松开结束";
+  plot.changeMode('Pencil')
+  mode.value = 'Pencil'
+  hint.value = '按住左键移动绘制，松开结束'
 }
 function selectMode() {
-  plot.changeMode();
-  mode.value = "Select";
-  hint.value = "可选中图元并拖拽编辑，右键删除";
+  plot.changeMode()
+  mode.value = 'Select'
+  hint.value = '可选中图元并拖拽编辑，右键删除'
 }
 function loadGeoJson() {
-  console.log("导入：", exportData);
+  console.log('导入：', exportData)
   if (!exportData?.features?.length) {
-    showToast("请先导出数据");
-    return;
+    showToast('请先导出数据')
+    return
   }
-  plot.load(exportData);
-  showToast(`已导入 ${exportData.features.length} 个图元`);
+  plot.load(exportData)
+  showToast(`已导入 ${exportData.features.length} 个图元`)
 }
 function exportGeoJson() {
-  exportData = plot.export();
-  console.log("导出数据：", exportData);
-  showToast(`已导出 ${exportData.features.length} 个图元`);
+  exportData = plot.export()
+  console.log('导出数据：', exportData)
+  showToast(`已导出 ${exportData.features.length} 个图元`)
 }
 function cleanAll() {
-  plot.removeAll();
-  showToast("已清除全部图元");
+  plot.removeAll()
+  showToast('已清除全部图元')
 }
 </script>
 
@@ -275,7 +277,10 @@ function cleanAll() {
   background: rgba(148, 163, 184, 0.12);
   border: 1px solid rgba(148, 163, 184, 0.18);
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .panel button:hover {
@@ -320,7 +325,9 @@ function cleanAll() {
 
 .toast-enter-active,
 .toast-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
 }
 
 .toast-enter-from,
